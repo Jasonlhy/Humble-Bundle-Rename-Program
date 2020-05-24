@@ -2,6 +2,7 @@ import os
 from hunspell import Hunspell
 h = Hunspell()
 
+
 def spellvalid_path(basename):
     """Find out the most likely spell valid filename with greedy algorithm
 
@@ -12,9 +13,8 @@ def spellvalid_path(basename):
     """
     [filename, extension] = os.path.splitext(basename)
 
-    # Compute the largest spell valid substring start with every character
-    # Store the (pattern, (startIdx, endIdx (inclusive)))
-    large_tokens = []
+    # Compute the largest spell valid substring by looking at the characters
+    tokens = []
     i, end = 0, len(filename)
     while i < end:
         # record the greedy information
@@ -28,13 +28,13 @@ def spellvalid_path(basename):
                 nextI = j + 1
 
         if greedy_token != None:
-            large_tokens.append(greedy_token)
+            tokens.append(greedy_token)
 
         # If we find the spell greedy token, other next token will look after than token
         # Otherwise we increment by 1
         i = nextI
 
-    valid_filename = "-".join(str(x.strip()) for x in large_tokens)
+    valid_filename = "-".join(str(x.strip()) for x in tokens)
     return valid_filename + extension
 
 
@@ -49,12 +49,12 @@ def batch_rename(path, extension=".pdf"):
     filenames = [s for s in os.listdir(path) if s.endswith(extension)]
 
     # Tuple of (filepath, valid spell filepath)
-    # batch_filename_tuples = [(s, os.path.join(path, spellvalid_path(s))) for s in filenames]
     batch_filename_tuples = [(s, spellvalid_path(s)) for s in filenames]
-    batch_filename_tuples = [(os.path.join(path, old), os.path.join(
-        path, new)) for (old, new) in batch_filename_tuples]
+    batch_filename_tuples = [
+        (os.path.join(path, old),
+         os.path.join(path, new))
+        for (old, new) in batch_filename_tuples]
 
-    print(batch_filename_tuples)
     for (old, new) in batch_filename_tuples:
         os.rename(old, new)
 
