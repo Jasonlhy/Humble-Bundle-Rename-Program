@@ -72,6 +72,6 @@ if not extension.startswith("."):
 sure = input(
     "Are you sure to rename the file under directory {dir} with extensions {ext} [Y/y]: ".format(dir=dir_path, ext=extension))
 if sure == 'Y' or sure == 'y':
-    batch_rename(dir_path)
+    batch_rename(dir_path, extension)
 else:
     print("Operation abort")

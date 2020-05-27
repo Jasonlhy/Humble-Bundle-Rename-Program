@@ -34,3 +34,7 @@ Because all followings are true
 - h.spell("algebra") => True
 - h.spell("essentials") => True
 - h.spell("essential") => True
+
+## Roadmap
+- Customize spell dictionary
+- Take preference of some term over another (for sample - the secure over these) 
